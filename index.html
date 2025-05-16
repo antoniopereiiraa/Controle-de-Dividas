@@ -114,19 +114,16 @@
 
 <body class="bg-gray-50 min-h-screen">
   <!-- Notification -->
-  <div id="notification"
-    class="notification glass-card fixed top-6 right-6 p-4 rounded-xl shadow-lg transform transition-all duration-300">
-    <div class="flex items-center space-x-3">
-      <div class="notification-icon flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center">
-        <i id="notificationIcon" class="fas fa-check text-xl"></i>
-      </div>
-      <div>
-        <p id="notificationTitle" class="font-medium">Título</p>
-        <p id="notificationMessage" class="text-sm opacity-90">Mensagem</p>
-      </div>
+
+  <div id="notification" class="notification">
+  <div class="flex items-center space-x-2">
+    <span id="notificationIcon"></span>
+    <div>
+      <div id="notificationTitle" class="font-bold"></div>
+      <div id="notificationMessage"></div>
     </div>
   </div>
-
+</div>
   <div class="max-w-md mx-auto bg-white min-h-screen shadow-sm">
     <!-- Header -->
     <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 sticky top-0 z-10">
@@ -376,7 +373,6 @@
 
             <div id="detailReminderSection">
               <p class="text-xs text-gray-500">Lembrete</p>
-              <p id="detailReminder" class="font-medium">15/06/2023 às 10:00</p>
             </div>
 
             <div id="detailPaymentSection" class="hidden">
@@ -1032,9 +1028,11 @@
       }
     }
 
-    function formatDate(dateString) {
-      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-      return new Date(dateString).toLocaleDateString('pt-BR', options);
+    function formatDate(dateStr) {
+  // dateStr vem do input, formato 'YYYY-MM-DD'
+  if (!dateStr) return '';
+  const [year, month, day] = dateStr.split('-');
+  return `${day}/${month}/${year}`;
     }
 
     function showDebtDetails(debt) {
@@ -1311,6 +1309,32 @@
       playNotificationSound();
     }
   </script>
+  <script>
+  // Formata a data no formato DD/MM/AAAA
+  function getDataAtualFormatada() {
+    const hoje = new Date();
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const ano = hoje.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  // Substitui as datas do modal pela data atual ao abrir o modal
+  function sincronizarDatasModal() {
+    const dataAtual = getDataAtualFormatada();
+    const detailDate = document.getElementById('detailDate');
+    const detailPaymentDate = document.getElementById('detailPaymentDate');
+    if (detailDate) detailDate.textContent = dataAtual;
+    if (detailPaymentDate) detailPaymentDate.textContent = dataAtual;
+  }
+
+  // Exemplo: sincroniza datas sempre que o modal for aberto
+  // Troque "#debtDetailModal" e lógica de abertura conforme sua implementação
+  document.getElementById('debtDetailModal').addEventListener('show', sincronizarDatasModal);
+
+  // Se usar botão específico para abrir, adicione assim:
+  // document.getElementById('botaoQueAbreOModal').addEventListener('click', sincronizarDatasModal);
+</script>
 </body>
 
 </html>
