@@ -1298,6 +1298,32 @@
       playNotificationSound();
     }
   </script>
+  <script>
+  // Formata a data no formato DD/MM/AAAA
+  function getDataAtualFormatada() {
+    const hoje = new Date();
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const ano = hoje.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  // Substitui as datas do modal pela data atual ao abrir o modal
+  function sincronizarDatasModal() {
+    const dataAtual = getDataAtualFormatada();
+    const detailDate = document.getElementById('detailDate');
+    const detailPaymentDate = document.getElementById('detailPaymentDate');
+    if (detailDate) detailDate.textContent = dataAtual;
+    if (detailPaymentDate) detailPaymentDate.textContent = dataAtual;
+  }
+
+  // Exemplo: sincroniza datas sempre que o modal for aberto
+  // Troque "#debtDetailModal" e lógica de abertura conforme sua implementação
+  document.getElementById('debtDetailModal').addEventListener('show', sincronizarDatasModal);
+
+  // Se usar botão específico para abrir, adicione assim:
+  // document.getElementById('botaoQueAbreOModal').addEventListener('click', sincronizarDatasModal);
+</script>
 </body>
 
 </html>
