@@ -1028,9 +1028,11 @@
       }
     }
 
-    function formatDate(dateString) {
-      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-      return new Date(dateString).toLocaleDateString('pt-BR', options);
+    function formatDate(dateStr) {
+  // dateStr vem do input, formato 'YYYY-MM-DD'
+  if (!dateStr) return '';
+  const [year, month, day] = dateStr.split('-');
+  return `${day}/${month}/${year}`;
     }
 
     function showDebtDetails(debt) {
